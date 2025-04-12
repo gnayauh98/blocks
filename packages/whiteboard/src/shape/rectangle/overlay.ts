@@ -24,11 +24,15 @@ export class BlocksRectangleOverlay extends LitElement {
         }
 
         return html`<div data-blocks-type="blocks-rect" class="" style="width: ${w}px;height: ${h}px;transform: translate(${x}px, ${y}px);display:${sd ? 'block' : 'none'}">
-            <svg class="blocks-shape-svg-container" xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <svg class="blocks-shape-svg-container" style="cursor:move;" xmlns="http://www.w3.org/2000/svg" version="1.1">
                 <circle class="nw-resize" cx="8" cy="8" r="4" fill="blue" />
                 <circle class="ne-resize" cx="${w - 8}" cy="8" r="4" fill="blue" />
                 <circle class="se-resize" cx="${w - 8}" cy="${h - 8}" r="4" fill="blue" />
                 <circle class="sw-resize" cx="8" cy="${h - 8}" r="4" fill="blue" />
+                <circle style="cursor:ns-resize;" cx="${w/2}" cy="8" r="4" fill="blue" />
+                <circle style="cursor:ew-resize;" cx="${w-8}" cy="${h/2}" r="4" fill="blue" />
+                <circle style="cursor:ns-resize;" cx="${w/2}" cy="${h-8}" r="4" fill="blue" />
+                <circle style="cursor:ew-resize;" cx="8" cy="${h/2}" r="4" fill="blue" />
             </svg>
         </div>`
     }

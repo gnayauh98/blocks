@@ -17,15 +17,19 @@ export class BlocksLineOverlay extends LitElement {
 
     protected render(): TemplateResult {
 
-        let { x, y, w, h, sc, sd } = this.attrs
+        let { x, y, w, h, sx, sy, dx, dy, sc, sd } = this.attrs
 
         if (w - 2 <= 0 || h - 2 <= 0) {
             return html``
         }
 
-        return html`<div data-blocks-type="blocks-rect" class="" style="width: ${w}px;height: ${h}px;transform: translate(${x}px, ${y}px);display:${sd?'none':'block'}">
+        const dfx = w * 8 / Math.sqrt(w * w + h * h) * (dx < 0 ? -1 : 1)
+        const dfy = h * 8 / Math.sqrt(w * w + h * h) * (dy < 0 ? -1 : 1)
+
+        return html`<div data-blocks-type="blocks-rect" class="" style="width: ${w + 8}px;height: ${h + 8}px;transform: translate(${x - 4}px, ${y - 4}px);display:${sd ? 'block' : 'none'}">
             <svg class="blocks-shape-svg-container" xmlns="http://www.w3.org/2000/svg" version="1.1">
-                <circle cx="8" cy="8" r="8" fill="blue" />
+                <circle style="cursor:move;" cx="${sx + 4 + dfx}" cy="${sy + 4 + dfy}" r="4" fill="blue" />
+                <circle style="cursor:move;" class="move-resize" cx="${sx + 4 + dx - dfx}" cy="${sy + 4 + dy - dfy}" r="4" fill="blue" />
             </svg>
         </div>`
     }

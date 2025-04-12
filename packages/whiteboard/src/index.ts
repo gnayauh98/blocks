@@ -19,6 +19,7 @@ export class WhiteBoard extends LitElement {
     static styles: CSSResultGroup = css`
     :host{
         display: block;
+        overflow: hidden;
     }
     
     .blocks-root {

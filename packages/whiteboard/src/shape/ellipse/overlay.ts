@@ -23,9 +23,12 @@ export class BlocksEllipseOverlay extends LitElement {
             return html``
         }
 
-        return html`<div data-blocks-type="blocks-rect" class="" style="width: ${w}px;height: ${h}px;transform: translate(${x}px, ${y}px);display:${sd?'none':'block'}">
-            <svg class="blocks-shape-svg-container" xmlns="http://www.w3.org/2000/svg" version="1.1">
-                <circle cx="8" cy="8" r="8" fill="blue" />
+        return html`<div data-blocks-type="blocks-rect" class="" style="border: 1px solid yellow;width: ${w + 8}px;height: ${h+ 8}px;transform: translate(${x - 4}px, ${y - 4}px);display:${sd?'block':'none'}">
+            <svg style="cursor:move;" class="blocks-shape-svg-container" xmlns="http://www.w3.org/2000/svg" version="1.1">
+                <circle style="cursor:ns-resize;" cx="${3 + w/2}" cy="12" r="4" fill="blue" />
+                <circle style="cursor:ew-resize;" cx="${w - 4}" cy="${3+ h/2}" r="4" fill="blue" />
+                <circle style="cursor:ns-resize;" cx="${3 + w/2}" cy="${h - 4}" r="4" fill="blue" />
+                <circle style="cursor:ew-resize;" cx="${3 + 8}" cy="${3+ h/2}" r="4" fill="blue" />
             </svg>
         </div>`
     }
