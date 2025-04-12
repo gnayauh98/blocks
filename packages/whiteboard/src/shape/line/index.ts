@@ -20,6 +20,10 @@ export class BlocksLine extends LitElement {
 
         let { x, y, w, h, sx, sy, dy, dx } = this.attrs
 
+        // if(sx - 1 <= 0 || sy-1 <= 0 || sx + dx -1 <=0 || sy + dy -1 <= 0){
+        //     return html``
+        // }
+
         return html`<div data-blocks-type="blocks-rect" class="" style="width: ${w}px;height: ${h}px;transform: translate(${x}px, ${y}px);">
             <svg class="blocks-shape-svg-container" xmlns="http://www.w3.org/2000/svg" version="1.1">
                 <line x1="${dx < 0 ? sx - 1 : sx + 1}" y1="${dy < 0 ? sy - 1 : sy + 1}" x2="${dx < 0 ? sx + dx + 1 : sx + dx - 1}" y2="${dy < 0 ? sy + dy + 1 : sy + dy - 1}" stroke="green"

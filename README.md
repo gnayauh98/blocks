@@ -1,6 +1,6 @@
 # Wcdraw
 <!-- SHOW START -->
-![](./assets/show001.png)
+![](./assets/show002.png)
 <!-- SHOW END -->
 
 > Under active development

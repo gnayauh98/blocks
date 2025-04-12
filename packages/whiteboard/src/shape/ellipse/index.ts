@@ -24,6 +24,10 @@ export class BlocksEllipse extends LitElement {
 
         const r = mx < my ? mx : my
 
+        if(my - 1 <= 0 || mx - 1 <= 0) {
+            return html``
+        }
+
         return html`<div data-blocks-type="blocks-rect" class="" style="width: ${w}px;height: ${h}px;transform: translate(${x}px, ${y}px);">
             <svg class="blocks-shape-svg-container" xmlns="http://www.w3.org/2000/svg" version="1.1">
                 <ellipse cx="${mx}" cy="${my}" rx="${mx - 1}" ry="${my - 1}" stroke="green"

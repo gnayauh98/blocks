@@ -1,13 +1,18 @@
 import { css, CSSResultGroup, html, LitElement, PropertyValues, TemplateResult } from 'lit'
 import { property, query, state } from 'lit/decorators.js'
+import { repeat } from 'lit/directives/repeat.js'
 import { MouseEventService } from './events/mouse'
 import { Slot } from './events/slot'
 import { BlocksEllipse } from './shape/ellipse'
 import { BlocksRectangle } from './shape/rectangle'
 import { BlocksTritangle } from './shape/triangle'
 import { BlocksLine } from './shape/line'
-
-type Shape = 'ellipse' | 'rectangle' | 'triangle' | 'line'
+import { InsertShapeService, UpdateShapeService } from './services'
+import { Shape, ShapeType } from './common/shape'
+import { BlocksRectangleOverlay } from './shape/rectangle/overlay'
+import { BlocksEllipseOverlay } from './shape/ellipse/overlay'
+import { BlocksTriangleOverlay } from './shape/triangle/overlay'
+import { BlocksLineOverlay } from './shape/line/overlay'
 
 export class WhiteBoard extends LitElement {
 
@@ -54,6 +59,22 @@ export class WhiteBoard extends LitElement {
         position: absolute;
         right:0;
     }
+
+    .nw-resize {
+        cursor: nw-resize;
+    }
+
+    .ne-resize {
+        cursor: ne-resize;
+    }
+
+    .sw-resize {
+        cursor: sw-resize;
+    }
+
+    .se-resize {
+        cursor: se-resize;
+    }
     `
 
     @property({ attribute: false })
@@ -62,68 +83,24 @@ export class WhiteBoard extends LitElement {
     @state()
     mouseService!: MouseEventService<MouseEvent>
 
+    insertShapeService!: InsertShapeService
+    updateShapeService!: UpdateShapeService
+
     @query(".blocks-html-layer")
     blocksHtmlContainer!: HTMLDivElement
 
     @state()
-    create_shape_type: Shape = 'rectangle'
+    selectedShapeType: ShapeType = 'rectangle'
+
+    @state()
+    shapes: Shape[] = []
 
     constructor() {
         super()
 
         this.mouseService = new MouseEventService(this)
-
-        const down = (() => {
-
-            let startEvent: MouseEvent | undefined
-            let endEvent: MouseEvent | undefined
-
-            return [(ev: MouseEvent) => {
-                startEvent = ev
-            }, (ev: MouseEvent) => {
-                endEvent = ev
-
-                // 处理
-                if (!startEvent || !endEvent) {
-                    startEvent = undefined
-                    endEvent = undefined
-                    return
-                }
-
-                const { offsetX: startX, offsetY: startY } = startEvent
-                const { offsetX: endX, offsetY: endY } = endEvent
-
-                if (startX === endX || startY === endY) {
-                    startEvent = undefined
-                    endEvent = undefined
-                    return
-                }
-
-                const offsetX = endX - startX
-                const offsetY = endY - startY
-
-                console.log(offsetX, offsetY)
-
-                // 绘图
-                const rectSvg = document.createElement(`blocks-shape-${this.create_shape_type}`)
-                rectSvg.attrs = {
-                    x: offsetX < 0 ? endX : startX,
-                    y: offsetY < 0 ? endY : startY,
-                    w: offsetX < 0 ? -offsetX : offsetX,
-                    h: offsetY < 0 ? -offsetY : offsetY,
-                    dx: offsetX,
-                    dy: offsetY,
-                    sx: offsetX < 0 ? -offsetX: 0,
-                    sy: offsetY < 0 ? -offsetY: 0,
-                }
-                this.blocksHtmlContainer.appendChild(rectSvg)
-
-                startEvent = undefined
-                endEvent = undefined
-            }]
-        })()
-        this.mouseService.on("tets", down[0], { down: true })
-        this.mouseService.on("tets", down[1], { up: true })
+        this.insertShapeService = new InsertShapeService(this)
+        this.updateShapeService = new UpdateShapeService(this)
 
         this.mouseService
     }
@@ -137,6 +114,8 @@ export class WhiteBoard extends LitElement {
         }
 
         this.mouseService.mount()
+        this.insertShapeService.mount()
+        this.updateShapeService.mount()
 
         this.draw()
     }
@@ -145,26 +124,35 @@ export class WhiteBoard extends LitElement {
         await this.updateComplete
     }
 
-    protected firstUpdated(_changedProperties: PropertyValues): void {
-        console.log("first update")
-    }
-
     disconnectedCallback(): void {
         super.disconnectedCallback()
 
         this.mouseService.unmount()
+        this.insertShapeService.unmount()
+        this.updateShapeService.unmount()
     }
 
-    switchShape(shape: Shape) {
-        this.create_shape_type = shape
+    switchShape(shape: ShapeType) {
+        this.selectedShapeType = shape
+    }
+
+    createElement(shape: Shape) {
+        return Shape.createElement(shape.blocksType, shape.attrs)
+    }
+
+    createOverlayElement(shape:Shape){
+        return Shape.createOverlayElement(shape.blocksType, shape.attrs)
     }
 
     protected override render(): TemplateResult {
         return html`<div data-type="blocks-root" class="blocks-root">
             <div class="blocks-html-layer">
+                ${repeat(this.shapes, (shape) => shape.id, this.createElement)}
             </div>
-            <div class="blocks-overlays-layer">svg</div>
+            <div class="blocks-overlays-layer">
+                ${repeat(this.shapes, (shape) => shape.id, this.createOverlayElement)}</div>
             <div class="blocks-tools">
+                <button @click="${() => this.switchShape('ellipse')}">ellipse</botton>
                 <button @click="${() => this.switchShape('ellipse')}">ellipse</botton>
                 <button @click="${() => this.switchShape('rectangle')}">rectangle</botton>
                 <button @click="${() => this.switchShape('triangle')}">triangle</botton>
@@ -186,4 +174,9 @@ export function effects() {
     customElements.define('blocks-shape-rectangle', BlocksRectangle)
     customElements.define('blocks-shape-triangle', BlocksTritangle)
     customElements.define('blocks-shape-line', BlocksLine)
+    
+    customElements.define('blocks-overlay-rectangle', BlocksRectangleOverlay)
+    customElements.define('blocks-overlay-ellipse', BlocksEllipseOverlay)
+    customElements.define('blocks-overlay-triangle', BlocksTriangleOverlay)
+    customElements.define('blocks-overlay-line', BlocksLineOverlay)
 }

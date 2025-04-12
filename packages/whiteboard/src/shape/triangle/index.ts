@@ -19,6 +19,10 @@ export class BlocksTritangle extends LitElement {
 
         let { x, y, w, h } = this.attrs
 
+        if(w - 2 <= 0 || h-1 <= 0){
+            return html``
+        }
+
         const points = `${w/2},1 1,${h-1} ${w-2},${h-1}`
 
         return html`<div data-blocks-type="blocks-rect" class="" style="width: ${w}px;height: ${h}px;transform: translate(${x}px, ${y}px);">

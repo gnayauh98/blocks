@@ -2,7 +2,7 @@ import { html, LitElement, nothing, TemplateResult } from "lit";
 import { property } from "lit/decorators.js";
 
 
-export class BlocksRectangle extends LitElement {
+export class BlocksLineOverlay extends LitElement {
 
     @property({ attribute: true, type: Object })
     attrs = { x: 0, y: 0, w: 0, h: 0, dx: 0, dy: 0, sx: 0, sy: 0, sc: 'green', sd: false }
@@ -23,10 +23,9 @@ export class BlocksRectangle extends LitElement {
             return html``
         }
 
-        return html`<div data-blocks-type="blocks-rect" class="" style="width: ${w}px;height: ${h}px;transform: translate(${x}px, ${y}px);">
+        return html`<div data-blocks-type="blocks-rect" class="" style="width: ${w}px;height: ${h}px;transform: translate(${x}px, ${y}px);display:${sd?'none':'block'}">
             <svg class="blocks-shape-svg-container" xmlns="http://www.w3.org/2000/svg" version="1.1">
-                <rect x="${1}" y="${1}" width="${w - 2}" height="${h - 2}" stroke="${sd ? 'blue': sc}"
-                stroke-width="2" fill="transparent" />
+                <circle cx="8" cy="8" r="8" fill="blue" />
             </svg>
         </div>`
     }
@@ -34,6 +33,6 @@ export class BlocksRectangle extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'blocks-shape-rectangle': BlocksRectangle
+        'blocks-overlay-line': BlocksLineOverlay
     }
 }
