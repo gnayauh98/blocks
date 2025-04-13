@@ -23,16 +23,16 @@ export class BlocksRectangleOverlay extends LitElement {
             return html``
         }
 
-        return html`<div data-blocks-type="blocks-rect" class="" style="width: ${w}px;height: ${h}px;transform: translate(${x}px, ${y}px);display:${sd ? 'block' : 'none'}">
+        return html`<div data-blocks-type="blocks-rect" class="" style="border: 1px dashed blue;width: ${w + 8}px;height: ${h + 8}px;transform: translate(${x - 5}px, ${y - 5}px);display:${sd ? 'block' : 'none'}">
             <svg class="blocks-shape-svg-container" style="cursor:move;" xmlns="http://www.w3.org/2000/svg" version="1.1">
-                <circle class="nw-resize" cx="8" cy="8" r="4" fill="blue" />
-                <circle class="ne-resize" cx="${w - 8}" cy="8" r="4" fill="blue" />
-                <circle class="se-resize" cx="${w - 8}" cy="${h - 8}" r="4" fill="blue" />
-                <circle class="sw-resize" cx="8" cy="${h - 8}" r="4" fill="blue" />
-                <circle style="cursor:ns-resize;" cx="${w/2}" cy="8" r="4" fill="blue" />
-                <circle style="cursor:ew-resize;" cx="${w-8}" cy="${h/2}" r="4" fill="blue" />
-                <circle style="cursor:ns-resize;" cx="${w/2}" cy="${h-8}" r="4" fill="blue" />
-                <circle style="cursor:ew-resize;" cx="8" cy="${h/2}" r="4" fill="blue" />
+                <circle class="nw-resize" cx="12" cy="12" r="4" fill="blue" />
+                <circle class="ne-resize" cx="${w - 4}" cy="12" r="4" fill="blue" />
+                <circle class="se-resize" cx="${w - 4}" cy="${h - 4}" r="4" fill="blue" />
+                <circle class="sw-resize" cx="12" cy="${h - 4}" r="4" fill="blue" />
+                <circle style="cursor:ns-resize;" cx="${w / 2 + 3}" cy="12" r="4" fill="blue" />
+                <circle style="cursor:ew-resize;" cx="${w - 4}" cy="${h / 2 + 3}" r="4" fill="blue" />
+                <circle style="cursor:ns-resize;" cx="${w / 2 + 3}" cy="${h - 4}" r="4" fill="blue" />
+                <circle style="cursor:ew-resize;" cx="12" cy="${h / 2 + 3}" r="4" fill="blue" />
             </svg>
         </div>`
     }

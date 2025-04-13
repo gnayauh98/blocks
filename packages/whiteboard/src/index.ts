@@ -13,6 +13,8 @@ import { BlocksRectangleOverlay } from './shape/rectangle/overlay'
 import { BlocksEllipseOverlay } from './shape/ellipse/overlay'
 import { BlocksTriangleOverlay } from './shape/triangle/overlay'
 import { BlocksLineOverlay } from './shape/line/overlay'
+import { BlocksLink } from './shape/link'
+import { BlocksLinkOverlay } from './shape/link/overlay'
 
 export class WhiteBoard extends LitElement {
 
@@ -141,6 +143,10 @@ export class WhiteBoard extends LitElement {
         return Shape.createElement(shape.blocksType, shape.attrs)
     }
 
+    createLink(shape:Shape) {
+
+    }
+
     createOverlayElement(shape:Shape){
         return Shape.createOverlayElement(shape.blocksType, shape.attrs)
     }
@@ -158,6 +164,7 @@ export class WhiteBoard extends LitElement {
                 <button @click="${() => this.switchShape('rectangle')}">rectangle</botton>
                 <button @click="${() => this.switchShape('triangle')}">triangle</botton>
                 <button @click="${() => this.switchShape('line')}">line</botton>
+                <button @click="${() => this.switchShape('link')}">link</botton>
             </div>
         </div>`
     }
@@ -175,9 +182,11 @@ export function effects() {
     customElements.define('blocks-shape-rectangle', BlocksRectangle)
     customElements.define('blocks-shape-triangle', BlocksTritangle)
     customElements.define('blocks-shape-line', BlocksLine)
+    customElements.define('blocks-shape-link', BlocksLink)
     
     customElements.define('blocks-overlay-rectangle', BlocksRectangleOverlay)
     customElements.define('blocks-overlay-ellipse', BlocksEllipseOverlay)
     customElements.define('blocks-overlay-triangle', BlocksTriangleOverlay)
     customElements.define('blocks-overlay-line', BlocksLineOverlay)
+    customElements.define('blocks-overlay-link', BlocksLinkOverlay)
 }

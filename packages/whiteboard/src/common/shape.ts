@@ -1,4 +1,3 @@
-import { html, TemplateResult } from "lit"
 import { BlocksEllipse } from "../shape/ellipse"
 import { BlocksLine } from "../shape/line"
 import { BlocksRectangle } from "../shape/rectangle"
@@ -7,6 +6,8 @@ import { BlocksRectangleOverlay } from "../shape/rectangle/overlay"
 import { BlocksEllipseOverlay } from "../shape/ellipse/overlay"
 import { BlocksLineOverlay } from "../shape/line/overlay"
 import { BlocksTriangleOverlay } from "../shape/triangle/overlay"
+import { BlocksLink } from "../shape/link"
+import { BlocksLinkOverlay } from "../shape/link/overlay"
 
 export interface ShapeAttrs {
     x: number
@@ -19,18 +20,21 @@ export interface ShapeAttrs {
     sy: number
     sc: string
     sd: boolean
+    from?: Shape
+    to?: Shape
 }
 
-export type ShapeType = 'ellipse' | 'rectangle' | 'triangle' | 'line'
+export type ShapeType = 'ellipse' | 'rectangle' | 'triangle' | 'line' | 'link'
 
-export type ShapeElement = BlocksEllipse | BlocksLine | BlocksRectangle | BlocksTritangle | BlocksRectangleOverlay | BlocksEllipseOverlay | BlocksLineOverlay | BlocksTriangleOverlay
+export type ShapeElement = BlocksEllipse | BlocksLine | BlocksRectangle | BlocksTritangle | BlocksLink
+| BlocksRectangleOverlay | BlocksEllipseOverlay | BlocksLineOverlay | BlocksTriangleOverlay | BlocksLinkOverlay
 
 export type Point = { x: number, y: number }
 
 export class Shape {
     id: string
 
-    attrs = { x: 0, y: 0, w: 0, h: 0, dx: 0, dy: 0, sx: 0, sy: 0, sc: 'green', sd: false }
+    attrs: ShapeAttrs
 
     blocksType: ShapeType
 

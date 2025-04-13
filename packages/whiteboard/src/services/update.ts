@@ -1,4 +1,5 @@
 import { WhiteBoard } from "..";
+import { pointInShape } from "../common/function";
 import { Service } from "../common/service";
 import { Point, Shape } from "../common/shape";
 
@@ -22,18 +23,18 @@ export class UpdateShapeService extends Service {
 
         return [
             (ev: MouseEvent) => {
+                if(this.app.selectedShapeType === 'link')return
                 if (!ev.shiftKey) {
                     for (const shape of this.app.shapes) {
                         shape.attrs.sd = false
                     }
                     reset()
                 }
-                const _shapes = this.app.shapes.filter(shape => shape.pointInShape({ x: ev.offsetX, y: ev.offsetY }))
-                if (!_shapes.length) {
+                const shape = pointInShape({ x: ev.offsetX, y: ev.offsetY },this.app.shapes)
+                if (!shape) {
                     reset()
                     return
                 }
-                const shape = _shapes[_shapes.length - 1]
                 const isExist = shapes.some(sh => sh.id === shape.id)
                 if (isExist) {
                     return
@@ -44,6 +45,8 @@ export class UpdateShapeService extends Service {
                 this.app.requestUpdate()
             },
             (ev: MouseEvent) => {
+
+                if(this.app.selectedShapeType === 'link')return
 
                 if (!shapes.length || ev.buttons !== 1 || !startPoint) {
                     reset()

@@ -2,7 +2,7 @@ import { html, LitElement, nothing, TemplateResult } from "lit";
 import { property } from "lit/decorators.js";
 
 
-export class BlocksLineOverlay extends LitElement {
+export class BlocksLinkOverlay extends LitElement {
 
     @property({ attribute: true, type: Object })
     attrs = { x: 0, y: 0, w: 0, h: 0, dx: 0, dy: 0, sx: 0, sy: 0, sc: 'green', sd: false }
@@ -37,6 +37,6 @@ export class BlocksLineOverlay extends LitElement {
 
 declare global {
     interface HTMLElementTagNameMap {
-        'blocks-overlay-line': BlocksLineOverlay
+        'blocks-overlay-link': BlocksLinkOverlay
     }
 }
